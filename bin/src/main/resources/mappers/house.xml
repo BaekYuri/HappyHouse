@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.project.model.dao.HouseDao">
+	<select id="searchAll" parameterType="HousePageBean" resultType="HouseDeal">
+		select d.aptname, d.dong, d.code, d.dealAmount, d.buildYear, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.jibun, d.type, d.rentMoney, i.lat, i.lng
+		from housedeal d join houseinfo i
+		using (AptName)
+		where d.aptname like concat('%',#{aptname},'%')
+		<if test="dong !='선택'">
+		and d.dong=#{dong}
+		</if>
+		<if test="dong =='선택'">
+			<if test="city !='선택'">
+			and d.dong in (select dong 
+						from baseaddress
+	                    where gugun =#{city})
+        	</if>
+		</if>
+	</select>
+	<select id="search" parameterType="int" resultType="HouseDeal">
+		select d.aptname, d.dong, d.code, d.dealAmount, d.buildYear, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor, d.jibun, d.type, d.rentMoney, i.lat, i.lng
+		from housedeal d join houseinfo i
+		using (AptName)
+		where d.no=${no}
+	</select>
+	<select id="getDong" parameterType="string" resultType="string">
+		select distinct dong
+		from baseaddress
+		where gugun=#{gugun}
+	</select>
+	<select id="getGu" resultType="string">
+		select distinct gugun 
+		from baseaddress
+	</select>
+	<select id="getCount" parameterType="HousePageBean" resultType="int">
+		select count(*)
+		from housedeal d join houseinfo i
+		using (AptName)
+		where d.aptname like concat('%',#{aptname},'%')
+		<if test="dong !='선택'">
+		and d.dong=#{dong}
+		</if>
+		<if test="dong =='선택'">
+			<if test="city !='선택'">
+			and d.dong in (select dong 
+						from baseaddress
+	                    where gugun =#{city})
+        	</if>
+		</if>
+	</select>
+</mapper>

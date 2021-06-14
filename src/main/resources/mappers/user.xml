@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.project.model.dao.UserDao">
+	<select id="select" parameterType="string" resultType="UserDto">
+		select email, name, address addr, phone
+		from users where email=#{email}
+	</select>
+
+	<!-- User 정보를 삭제한다. -->
+	<delete id="delete" parameterType="string">
+		delete from users where
+		email=#{email}
+	</delete>
+	
+	<!-- User 정보를 수정한다. -->
+	<update id="modifyInfo" parameterType="UserDto">
+		update users
+		set
+		name = #{name}, address =
+		#{addr}, phone=#{phone}
+		where email=#{email}
+	</update>
+
+	<!-- User 정보를 저장한다. -->
+	<insert id="join" parameterType="UserDto">
+		<![CDATA[]]>
+		insert into users values(#{email}, #{pass},#{name},
+		#{addr},#{phone})
+	</insert>
+
+	<!-- User 에서 검색한다. -->
+	<select id="getInfo" resultType="UserDto" parameterType="string">
+		select email,name, address addr, phone from users
+		where email=#{email}
+	</select>
+	
+	<select id="login" resultType="UserDto" parameterType="map">
+		select email, name, address addr, phone from users
+		where email=#{email} and pass=#{userpwd}
+	</select>
+	
+</mapper>

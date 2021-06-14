@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.project.model.dao.CountryMarketDao">
+
+	<!-- 전체 가져오기 -->
+
+	<select id="getMarket" parameterType="map"
+		resultType="CountryMarketDto">
+		select b.gugun, b.dong, m.registnum, m.recognizedstore, m.registarea,
+		m.recognizednum, m.recognizedstore, m.recognizedarea,
+		m.shoppingstreetnum, m.shoppingstreetstore, m.shoppingstreetarea
+		
+		from baseaddress b left join (select
+		gugun,concat(if(mid(dong,char_length(dong)-1,1) REGEXP
+		'^[0-9]|본+$',substring(dong,1, char_length(dong)-2),substring(dong,1,
+		char_length(dong)-1)),"동") dongs, sum(registnum) as
+		"registnum",sum(registstore) as "registstore",sum(registarea) as
+		"registarea",sum(recognizednum) as
+		"recognizednum",sum(recognizedstore) as
+		"recognizedstore",sum(recognizedarea) as
+		"recognizedarea",sum(shoppingstreetnum) as
+		"shoppingstreetnum",sum(shoppingstreetstore) as
+		"shoppingstreetstore",sum(shoppingstreetarea) as "shoppingstreetarea"
+		
+		from countrymarket where dong!="소계"
+		group by dongs) m
+		on b.gugun=m.gugun and b.dong = m.dongs
+		where b.gugun=#{gugun}
+		and b.dong=#{dong};
+	</select>
+	
+	<select id="getSumAvg" resultType="CountryMarketDto">
+		select avg(ifnull(registnum,0)) as "registnum", avg(ifnull(registstore,0)) as "registstore", avg(ifnull(registarea,0)) as "registarea", avg(ifnull(recognizednum,0)) as "recognizednum", avg(ifnull(recognizedstore,0)) as "recognizedstore", avg(ifnull(recognizedarea,0)) as "recognizedarea", avg(ifnull(shoppingstreetnum,0)) as "shoppingstreetnum", avg(ifnull(shoppingstreetstore,0)) as "shoppingstreetstore", avg(ifnull(shoppingstreetarea,0)) as "shoppingstreetarea"
+		 from countrymarket
+		where dong!="소계"
+	</select>
+	
+	<select id="getGuAvg" parameterType="string" resultType="CountryMarketDto">
+		select gugun, avg(ifnull(registnum,0)) as "registnum", avg(ifnull(registstore,0)) as "registstore", avg(ifnull(registarea,0)) as "registarea", avg(ifnull(recognizednum,0)) as "recognizednum", avg(ifnull(recognizedstore,0)) as "recognizedstore", avg(ifnull(recognizedarea,0)) as "recognizedarea", avg(ifnull(shoppingstreetnum,0)) as "shoppingstreetnum", avg(ifnull(shoppingstreetstore,0)) as "shoppingstreetstore", avg(ifnull(shoppingstreetarea,0)) as "shoppingstreetarea"  from countrymarket
+		where dong!="소계"
+		and gugun=#{gugun}
+		group by gugun
+	</select>
+	
+	<select id="getMax" resultType="CountryMarketDto">
+		select max(cast(registnum as unsigned)) as "registnum", max(cast(registstore as unsigned)) as "registstore", max(cast(registarea as unsigned)) as "registarea", max(cast(recognizednum as unsigned)) as "recognizednum", max(cast(recognizedstore as unsigned)) as "recognizedstore", max(cast(recognizedarea as unsigned)) as "recognizedarea", max(cast(shoppingstreetnum as unsigned)) as "shoppingstreetnum", max(cast(shoppingstreetstore as unsigned)) as "shoppingstreetstore", max(cast(shoppingstreetarea as unsigned)) as "shoppingstreetarea" from countrymarket
+ 		where dong!="소계"
+	</select>
+</mapper>
+	

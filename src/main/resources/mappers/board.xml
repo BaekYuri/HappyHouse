@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.project.model.dao.BoardDao">
+	<select id="getList" resultType="Board">
+		select *
+		from board
+	</select>
+
+	<!-- 게시글 정보를 삭제한다. -->
+	<delete id="delete" parameterType="int">
+		delete from board where
+		no=#{no}
+	</delete>
+	
+	<!-- 게시글 정보를 수정한다. -->
+	<insert id="modify" parameterType="Board">
+		update board
+		set
+		title = #{title}, content =
+		#{content}
+		where no=#{no}
+	</insert>
+
+	<!-- 게시글  정보를 등록한다. -->
+	<insert id="regist" parameterType="Board">
+		insert into board(writer, title, content) values(#{writer}, #{title},#{content})
+	</insert>
+
+	<!-- Board 에서 검색한다.board.writer = user.email  -->
+	<select id="Search" resultType="Board" parameterType="map">
+		select *
+		from board 
+		<if test="text!=null and text!='none'">
+		where ${keyword} like concat("%",#{text},"%")
+		</if>
+		
+	</select>
+
+	<select id="view" parameterType="int" resultType="Board">
+		select *
+		from board where no=#{no}
+	</select>
+</mapper>
