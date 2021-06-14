@@ -10,5 +10,5 @@
 |프레임워크|Vuejs, Spring, MySQL|
 |협업툴|Notion, GitLab|
 
-[화면설계 바로가기](https://github.com/BaekYuri/HappyHouse_Spring/blob/master/happyhouse_%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84%EC%84%9C.pdf)
-[Vue 프로젝트 바로가기](https://github.com/BaekYuri/HappyHouse_Vuejs)
+[화면설계 바로가기](https://github.com/BaekYuri/HappyHouse_Spring/blob/master/happyhouse_%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84%EC%84%9C.pdf)  
+[Vue 프로젝트 바로가기](https://github.com/BaekYuri/HappyHouse_Vuejs)  
